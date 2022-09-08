@@ -14,8 +14,9 @@ function saveTodoList() { //중복해서 저장해야 하는 부분이 많아서
 }
 
 function saveTodo(list){
+    // id 는 UUID 값으로 보통 들어온다
     const todoObj = {
-      id: localTodoList.length + 1,
+      id: (Math.random() * 100000),
       text: list
     };
     localTodoList.push(todoObj);
@@ -32,6 +33,7 @@ function delTodo(e) {
 
 function updateTodo(e) {
   let upTmpText = e.target.previousSibling.innerHTML;
+  submitBtn.dataset.role = "edit"
   submitBtn.innerHTML = "수정";
   submitBtn.style.animation = "blackToRed 0.5s forwards";
   document.querySelector("#uploadInput").value = upTmpText;
@@ -76,9 +78,15 @@ function loadTodo(){
     clear.addEventListener('click',()=>{
         if(confirm('리스트를 전부 삭제시겠습니까?')) {
             const delUl = document.getElementsByClassName('todoList');
-            while(delUl.length > 0){
-                delUl[0].parentNode.removeChild(delUl[0]);
-            }//모든 노드 지우기
+            
+            // 안에 내용을 모두 지우는 방법
+            if (delUl.length > 0) {
+                delUl[0].innerHTML = ""
+            }
+
+            // while(delUl.length > 0){
+            //     delUl[0].parentNode.removeChild(delUl[0]);
+            // }//모든 노드 지우기
             localStorage.clear();
             alert('모든 리스트가 삭제되었습니다.');
         }
@@ -95,7 +103,8 @@ function loadTodo(){
         }
         else alert("내용을 입력하세요");
         todoInput.value = ""; //input 내용 삭제
-        if(submitBtn.innerHTML=="수정"){ //수정으로 넘어갔을 때
+        if(submitBtn.dataset.role=="edit"){ //수정으로 넘어갔을 때
+            submitBtn.dataset.role = ""
             submitBtn.innerHTML = "입력";
             submitBtn.style.animation = "redToBlack 0.5s forwards";
         }
