@@ -3,6 +3,7 @@
     "json-server": "^0.17.0"
   },
   "dependencies": {
-    "axios": "^0.27.2"
+    "axios": "^0.27.2",
+    "uuid": "^9.0.0"
   }
 }
