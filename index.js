@@ -9,7 +9,7 @@ const TODOLIST = "TODOLIST"
 let localTodoList = []; //로컬 저장용
 
 
-function saveTodoList() { //중복해서 써야하는 부분이 많아서 빼줌
+function saveTodoList() { //중복해서 저장해야 하는 부분이 많아서 빼줌
   localStorage.setItem(TODOLIST, JSON.stringify(localTodoList));
 }
 
@@ -22,20 +22,20 @@ function saveTodo(list){
     saveTodoList();
 }
 
-function updateTodo(e){
-    let upTmpText = e.target.previousSibling.innerHTML;
-    submitBtn.innerHTML="수정";
-    submitBtn.style.animation = "blackToRed 0.5s forwards";
-    document.querySelector("#uploadInput").value = upTmpText;
-    delTodo(e);
-}
-
 function delTodo(e) {
     const { target: button } = e; //target 속성이 주는 button에서 그 버튼이 속한 li를 가져옴(구조분해할당)
     const parent = button.parentNode 
     todoList.removeChild(parent); //button의 parentNode를 DOM 트리에서 삭제함
     localTodoList = localTodoList.filter((li) => li.id !== Number(parent.id)); //노드의 id와 다른 localTodolist의 요소를 필터링
     saveTodoList();
+}
+
+function updateTodo(e) {
+  let upTmpText = e.target.previousSibling.innerHTML;
+  submitBtn.innerHTML = "수정";
+  submitBtn.style.animation = "blackToRed 0.5s forwards";
+  document.querySelector("#uploadInput").value = upTmpText;
+  delTodo(e);
 }
 
 function paintTodo(list){
@@ -87,7 +87,7 @@ function loadTodo(){
 
 (function init(){
     loadTodo();
-    submitForm.addEventListener('submit',(e)=>{
+    submitForm.addEventListener('submit',(e)=>{ //form제출할 때 트리거 발생
         e.preventDefault();// 새로고침 방지
         if(todoInput.value !==""){ //공백으로 입력됐을 때
             paintTodo(todoInput.value); //input 태그에 value값을 넣어줌
